@@ -58,6 +58,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static boolean button5Disable = false;
 	public static boolean button6Disable = false;
 	public static boolean button7Disable = false;
+	public static int HighScore = 0;
 	static final int Delay = 1;
 	public static int Score = 0;
 	public static int totalScore = 0;
@@ -205,7 +206,13 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			this.add(shopButton);
 		} else if (isPauseing && !isRunning) {
 			this.remove(changePlayerShapeButton);
+			g.setColor(Color.yellow);
+			g.setFont(new Font("Ink Free", Font.BOLD, 60));
+			g.drawString("Coins: " + Score, (ScreenWidth / 2 - 110), ScreenHeight / 2 - 50);
 			PlayButton.setEnabled(true);
+			g.setColor(Color.black);
+			g.setFont(new Font("Ink Free", Font.BOLD, 60));
+			g.drawString("HighScore: " + HighScore, (ScreenWidth / 2 - 175), ScreenHeight / 2 -150);
 			PlayButton.setBounds(200, 300, 200, 50);
 			PlayButton.setFont(new Font("Arial", Font.ITALIC, 40));
 			PlayButton.setText("PLAY");
@@ -576,6 +583,9 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			if (playerXpos == enemy1Xpos && playerYpos == enemy1Ypos) {
 				playerXpos = startPlayerXpos;
 				playerYpos = startPlayerYpos;
+				if(Score > HighScore) {
+					HighScore = Score;
+				}
 				totalScore += Score;
 				Score = 0;
 				Deaths++;
