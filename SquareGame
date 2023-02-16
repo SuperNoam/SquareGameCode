@@ -41,6 +41,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static int playerYpos = ScreenHeight / 2;
 	public static int enemy1Xpos;
 	public static int enemy1Ypos;
+	public static int eneFolRightAndLeftOrUpAndDown;
+	public static int eneMoveOrNot;
 	public static int point1Xpos;
 	public static int point1Ypos;
 	public static int TimesPoints = 1;
@@ -68,6 +70,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static boolean changeShapeTool = true;
 	public static boolean purchaseErrorTool = true;
 	public static int eneMove = 0;
+	public static int eneFollowOrNot;
 	public static String[] Shapes = { "Circle", "Square" };
 	public static int chosenShape;
 	Timer timer;
@@ -83,7 +86,6 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	JButton Times6Button = new JButton();
 	JButton Times7Button = new JButton();
 	JButton backToMenuButton = new JButton();
-	
 
 	public SquareGamePannel() {
 		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
@@ -165,11 +167,11 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			g.drawString("Deaths: " + Deaths, (ScreenWidth - 170), 50);
 
 		} else if (!isPauseing && !isRunning && isMainMenu) {
-			g.setColor(new Color(212,175,55));
+			g.setColor(new Color(212, 175, 55));
 			g.setFont(new Font("Ink Free", Font.BOLD, 60));
-			g.drawString("Square Game", 125 , 100);
+			g.drawString("Square Game", 125, 100);
 			g.setFont(new Font("Ink Free", Font.ITALIC, 30));
-			g.drawString("By Noam Asher", 200 , 150);
+			g.drawString("By Noam Asher", 200, 150);
 			changePlayerShapeButton.setEnabled(true);
 			changePlayerShapeButton.setBounds(200, 400, 200, 50);
 			changePlayerShapeButton.setFont(new Font("Arial", Font.BOLD, 25));
@@ -199,8 +201,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			shopButton.addActionListener(e -> shopButtonExacuted());
 			g.setColor(Color.black);
 			g.setFont(new Font("Arial", Font.ITALIC, 40));
-			g.drawString("Total coins: " + totalScore, 175 , 200);
-			//Add HighScore here
+			g.drawString("Total coins: " + totalScore, 175, 200);
+			// Add HighScore here
 			this.add(PlayButton);
 			this.add(changePlayerShapeButton);
 			this.add(shopButton);
@@ -212,7 +214,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			PlayButton.setEnabled(true);
 			g.setColor(Color.black);
 			g.setFont(new Font("Ink Free", Font.BOLD, 60));
-			g.drawString("HighScore: " + HighScore, (ScreenWidth / 2 - 175), ScreenHeight / 2 -150);
+			g.drawString("HighScore: " + HighScore, (ScreenWidth / 2 - 175), ScreenHeight / 2 - 150);
 			PlayButton.setBounds(200, 300, 200, 50);
 			PlayButton.setFont(new Font("Arial", Font.ITALIC, 40));
 			PlayButton.setText("PLAY");
@@ -232,10 +234,9 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			mainMenuButton.setBorder(BorderFactory.createEtchedBorder());
 			mainMenuButton.addActionListener(e -> mainMenuButtonExacuted());
 			this.add(mainMenuButton);
-		}
-		else if(isShop) {
+		} else if (isShop) {
 			purchaseErrorTool = true;
-			
+
 			Times2Button.setEnabled(true);
 			Times2Button.setBounds(100, 50, 100, 100);
 			Times2Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -246,17 +247,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times2Button.setBorder(BorderFactory.createEtchedBorder());
 			Times2Button.addActionListener(e -> checkTimes2());
 			this.add(Times2Button);
-			if(!button2Disable) {
+			if (!button2Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("25 coins", 105 , 175);
-			}
-			else {
+				g.drawString("25 coins", 105, 175);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 100 , 175);
+				g.drawString("Bought!", 100, 175);
 			}
-			
+
 			Times3Button.setEnabled(true);
 			Times3Button.setBounds(100, 207, 100, 100);
 			Times3Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -267,17 +267,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times3Button.setBorder(BorderFactory.createEtchedBorder());
 			Times3Button.addActionListener(e -> checkTimes3());
 			this.add(Times3Button);
-			if(!button3Disable) {
+			if (!button3Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("70 coins", 105 , 337);
-			}
-			else {
+				g.drawString("70 coins", 105, 337);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 100 , 337);
+				g.drawString("Bought!", 100, 337);
 			}
-			
+
 			Times4Button.setEnabled(true);
 			Times4Button.setBounds(100, 375, 100, 100);
 			Times4Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -288,17 +287,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times4Button.setBorder(BorderFactory.createEtchedBorder());
 			Times4Button.addActionListener(e -> checkTimes4());
 			this.add(Times4Button);
-			if(!button4Disable) {
+			if (!button4Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("150 coins", 105 , 500);
-			}
-			else {
+				g.drawString("150 coins", 105, 500);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 100 , 500);
+				g.drawString("Bought!", 100, 500);
 			}
-			
+
 			Times5Button.setEnabled(true);
 			Times5Button.setBounds(400, 50, 100, 100);
 			Times5Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -309,17 +307,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times5Button.setBorder(BorderFactory.createEtchedBorder());
 			Times5Button.addActionListener(e -> checkTimes5());
 			this.add(Times5Button);
-			if(!button5Disable) {
+			if (!button5Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("270 coins", 405 , 175);
-			}
-			else {
+				g.drawString("270 coins", 405, 175);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 405 , 175);
+				g.drawString("Bought!", 405, 175);
 			}
-			
+
 			Times6Button.setEnabled(true);
 			Times6Button.setBounds(400, 207, 100, 100);
 			Times6Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -330,17 +327,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times6Button.setBorder(BorderFactory.createEtchedBorder());
 			Times6Button.addActionListener(e -> checkTimes6());
 			this.add(Times6Button);
-			if(!button6Disable) {
+			if (!button6Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("400 coins", 405 , 337);
-			}
-			else {
+				g.drawString("400 coins", 405, 337);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 405 , 337);
+				g.drawString("Bought!", 405, 337);
 			}
-			
+
 			Times7Button.setEnabled(true);
 			Times7Button.setBounds(400, 375, 100, 100);
 			Times7Button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -351,17 +347,16 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Times7Button.setBorder(BorderFactory.createEtchedBorder());
 			Times7Button.addActionListener(e -> checkTimes7());
 			this.add(Times7Button);
-			if(!button7Disable) {
+			if (!button7Disable) {
 				g.setColor(Color.black);
 				g.setFont(new Font("Ink Free", Font.BOLD, 20));
-				g.drawString("600 coins", 405 , 500);
-			}
-			else {
+				g.drawString("600 coins", 405, 500);
+			} else {
 				g.setColor(Color.red);
 				g.setFont(new Font("Ink Free", Font.BOLD, 30));
-				g.drawString("Bought!", 405 , 500);
+				g.drawString("Bought!", 405, 500);
 			}
-		
+
 			backToMenuButton.setEnabled(true);
 			backToMenuButton.setBounds(250, 500, 100, 50);
 			backToMenuButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -374,7 +369,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			this.add(backToMenuButton);
 		}
 	}
-	
+
 	public void backToMenuButton() {
 		isShop = false;
 		isMainMenu = true;
@@ -386,114 +381,111 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		this.remove(Times7Button);
 		this.remove(backToMenuButton);
 	}
+
 	public void checkTimes2() {
-		if(TimesBoughts == 0 && totalScore >= 25) {
-			totalScore-=25;
+		if (TimesBoughts == 0 && totalScore >= 25) {
+			totalScore -= 25;
 			button2Disable = true;
 			Bought();
-		}
-		else if(!button2Disable && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button2Disable && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void checkTimes3() {
-		if(TimesBoughts == 1 && totalScore >= 70) {
-			totalScore-=70;
+		if (TimesBoughts == 1 && totalScore >= 70) {
+			totalScore -= 70;
 			button3Disable = true;
 			Bought();
 			Times3Button.setEnabled(false);
-		}
-		else if(!button3Disable && !isMainMenu && totalScore < 70 && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
-		}
-		else if(!button3Disable && TimesBoughts != 1 && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button3Disable && !isMainMenu && totalScore < 70 && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
+		} else if (!button3Disable && TimesBoughts != 1 && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void checkTimes4() {
-		if(TimesBoughts == 2 && totalScore >= 150) {
-			totalScore-=150;
+		if (TimesBoughts == 2 && totalScore >= 150) {
+			totalScore -= 150;
 			button4Disable = true;
 			Bought();
 			Times4Button.setEnabled(false);
-		}
-		else if(!button4Disable && !isMainMenu && totalScore < 150 && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
-		}
-		else if(!button4Disable && TimesBoughts != 2 && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button4Disable && !isMainMenu && totalScore < 150 && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
+		} else if (!button4Disable && TimesBoughts != 2 && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void checkTimes5() {
-		if(TimesBoughts == 3 && totalScore >= 270) {
-			totalScore-=270;
+		if (TimesBoughts == 3 && totalScore >= 270) {
+			totalScore -= 270;
 			button5Disable = true;
 			Bought();
 			Times5Button.setEnabled(false);
-		}
-		else if(!button5Disable && !isMainMenu && totalScore < 270 && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
-		}
-		else if(!button5Disable && TimesBoughts != 3 && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button5Disable && !isMainMenu && totalScore < 270 && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
+		} else if (!button5Disable && TimesBoughts != 3 && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void checkTimes6() {
-		if(TimesBoughts == 4 && totalScore >= 400) {
-			totalScore-=400;
+		if (TimesBoughts == 4 && totalScore >= 400) {
+			totalScore -= 400;
 			button6Disable = true;
 			Bought();
 			Times6Button.setEnabled(false);
-		}
-		else if(!button6Disable && !isMainMenu && totalScore < 400 && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
-		}
-		else if(!button3Disable && TimesBoughts != 4 && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button6Disable && !isMainMenu && totalScore < 400 && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
+		} else if (!button3Disable && TimesBoughts != 4 && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void checkTimes7() {
-		if(TimesBoughts == 5 && totalScore >= 600) {
-			totalScore-=600;
+		if (TimesBoughts == 5 && totalScore >= 600) {
+			totalScore -= 600;
 			button7Disable = true;
 			Bought();
 			Times7Button.setEnabled(false);
-		}
-		else if(!button7Disable && !isMainMenu && totalScore < 600 && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
-		}
-		else if(!button7Disable && TimesBoughts != 5 && !isMainMenu && purchaseErrorTool){
-		     JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items",
-		    	      "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-		     purchaseErrorTool = false;
+		} else if (!button7Disable && !isMainMenu && totalScore < 600 && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You dont have enough coins\nto purchase that item", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
+		} else if (!button7Disable && TimesBoughts != 5 && !isMainMenu && purchaseErrorTool) {
+			JOptionPane.showMessageDialog(null, "You need to buy the\nprevious items", "ERROR!!!",
+					JOptionPane.ERROR_MESSAGE);
+			purchaseErrorTool = false;
 		}
 	}
+
 	public void Bought() {
 		TimesPoints++;
 		TimesBoughts++;
-		JOptionPane.showMessageDialog(null, "Congrats on your purchase!", "PURCHASE SUCCEED!", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Congrats on your purchase!", "PURCHASE SUCCEED!",
+				JOptionPane.PLAIN_MESSAGE);
 	}
-	
+
 	public void mainMenuButtonExacuted() {
 		isMainMenu = true;
 		totalScore += Score;
@@ -512,7 +504,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		isShop = false;
 		changeShapeTool = true;
 	}
-	
+
 	public void shopButtonExacuted() {
 		isShop = true;
 		isPauseing = false;
@@ -527,8 +519,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		this.remove(shopButton);
 		isChoosingShape = true;
 		if (isChoosingShape && !isPauseing && changeShapeTool) {
-			chosenShape = JOptionPane.showOptionDialog(null, "Please choose what shape\nYou would like to play.", "Change Shape",
-					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, Shapes, Shapes[1]);
+			chosenShape = JOptionPane.showOptionDialog(null, "Please choose what shape\nYou would like to play.",
+					"Change Shape", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, Shapes, Shapes[1]);
 			switch (chosenShape) {
 			case 0:
 				isCircle = true;
@@ -566,7 +558,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			}
 			// check collide with right border
 			else if (playerXpos >= ScreenWidth) {
-				playerXpos = 1;
+				playerXpos = 0;
 				checkCollideWithCoins();
 			}
 			// check collide with top border
@@ -576,14 +568,14 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			}
 			// check collide with bottom border
 			else if (playerYpos >= ScreenHeight) {
-				playerYpos = 1;
+				playerYpos = 0;
 				checkCollideWithCoins();
 			}
 			// check collide with enemy
 			if (playerXpos == enemy1Xpos && playerYpos == enemy1Ypos) {
 				playerXpos = startPlayerXpos;
 				playerYpos = startPlayerYpos;
-				if(Score > HighScore) {
+				if (Score > HighScore) {
 					HighScore = Score;
 				}
 				totalScore += Score;
@@ -595,43 +587,71 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			checkCollideWithCoins();
 		}
 	}
+
 	public void checkCollideWithCoins() {
 		if (playerXpos == point1Xpos && playerYpos == point1Ypos) {
-			Score+=1*TimesPoints;
+			Score += 1 * TimesPoints;
 			pointsGenerator();
 		}
 	}
+
 	public void removeShopButon() {
 		this.remove(shopButton);
 	}
+
 	public void enemyMovments() {
-		if (isRunning && !isPauseing) {
-			eneMove = random.nextInt(4);
-			switch (eneMove) {
-			case 0:
-				if (enemy1Xpos != 600) {
-					enemy1Xpos += 25;
-					checkCollisions();
+		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
+		if (eneMoveOrNot == 0) {
+			if (isRunning && !isPauseing) {
+				eneFollowOrNot = random.nextInt(3);// follow or not
+				if (eneFollowOrNot == 0) {
+					eneFolRightAndLeftOrUpAndDown = random.nextInt(2);// 0 = Right And Left 1 = Up And Down
+					if (eneFolRightAndLeftOrUpAndDown == 0) {
+						if (enemy1Xpos > playerXpos) {
+							enemy1Xpos -= 25;
+							checkCollisions();
+						} else {
+							enemy1Xpos += 25;
+							checkCollisions();
+						}
+					} else {
+						if (enemy1Ypos > playerYpos) {
+							enemy1Ypos -= 25;
+							checkCollisions();
+						} else {
+							enemy1Ypos += 25;
+							checkCollisions();
+						}
+					}
+				} else {
+					eneMove = random.nextInt(4);
+					switch (eneMove) {
+					case 0:
+						if (enemy1Xpos != 600) {
+							enemy1Xpos += 25;
+							checkCollisions();
+						}
+						break;
+					case 1:
+						if (enemy1Ypos != 600) {
+							enemy1Ypos += 25;
+							checkCollisions();
+						}
+						break;
+					case 2:
+						if (enemy1Xpos != 0) {
+							enemy1Xpos -= 25;
+							checkCollisions();
+						}
+						break;
+					case 3:
+						if (enemy1Ypos != 0) {
+							enemy1Ypos -= 25;
+							checkCollisions();
+						}
+						break;
+					}
 				}
-				break;
-			case 1:
-				if (enemy1Ypos != 600) {
-					enemy1Ypos += 25;
-					checkCollisions();
-				}
-				break;
-			case 2:
-				if (enemy1Xpos != 0) {
-					enemy1Xpos -= 25;
-					checkCollisions();
-				}
-				break;
-			case 3:
-				if (enemy1Ypos != 0) {
-					enemy1Ypos -= 25;
-					checkCollisions();
-				}
-				break;
 			}
 		}
 	}
@@ -660,7 +680,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 					System.out.println("Enemy x = " + enemy1Xpos);
 					System.out.println("Enemy y = " + enemy1Ypos);
 					System.out.println("Coin x = " + point1Xpos);
-					System.out.println("Coin y + " + point1Ypos);
+					System.out.println("Coin y = " + point1Ypos);
 					break;
 				}
 			}
@@ -669,8 +689,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 				if (isPauseing) {
 					isRunning = true;
 					isPauseing = false;
-				}
-				else if(!isPauseing && !isMainMenu && !isShop){
+				} else if (!isPauseing && !isMainMenu && !isShop) {
 					isRunning = false;
 					isPauseing = true;
 				}
