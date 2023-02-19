@@ -26,7 +26,11 @@ public class SquareGameFrame extends JFrame {
 	}
 }
 SquareGamePannel====================================================================================================================
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
@@ -104,12 +108,15 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 
 	public void startGame() {
 		enemysPosGenerate();
-		pointsGenerator();
+		regPointsGenerator();
+		spePointsGenerator();
 	}
 
-	public void pointsGenerator() {
+	public void regPointsGenerator() {
 		point1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
 		point1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
+	}
+	public void spePointsGenerator() {
 		specialPoint1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
 		specialPoint1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
 	}
@@ -162,10 +169,10 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 				g.setColor(Color.blue);
 				g.fillOval(playerXpos, playerYpos, UnitSize, UnitSize);
 			}
-
-			g.setColor(new Color(255, 215, 0));
+			
+			g.setColor(new Color(249, 227, 87));
 			g.fillOval(point1Xpos + 1, point1Ypos + 2, coinsSize, coinsSize);
-			g.setColor(new Color(100,249,25));
+			g.setColor(new Color(255, 215, 0));
 			g.fillOval(specialPoint1Xpos + 1, specialPoint1Ypos + 2, coinsSize, coinsSize);
 
 			g.setColor(Color.red);
@@ -614,11 +621,11 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public void checkCollideWithCoins() {
 		if (playerXpos == point1Xpos && playerYpos == point1Ypos) {
 			Score += 1 * TimesPoints;
-			pointsGenerator();
+			regPointsGenerator();
 		}
 		else if (playerXpos == specialPoint1Xpos && playerYpos == specialPoint1Ypos) {
 			Score += 2 * TimesPoints;
-			pointsGenerator();
+			spePointsGenerator();
 		}
 	}
 
