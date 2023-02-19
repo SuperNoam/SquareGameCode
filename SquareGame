@@ -41,10 +41,14 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static int playerYpos = ScreenHeight / 2;
 	public static int enemy1Xpos;
 	public static int enemy1Ypos;
+	public static int enemy2Xpos;
+	public static int enemy2Ypos;
 	public static int eneFolRightAndLeftOrUpAndDown;
 	public static int eneMoveOrNot;
 	public static int point1Xpos;
 	public static int point1Ypos;
+	public static int specialPoint1Xpos;
+	public static int specialPoint1Ypos;
 	public static int TimesPoints = 1;
 	public static int TimesBoughts = 0;
 	public static int UnitSize = 25;
@@ -69,7 +73,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static boolean isSquare = true;
 	public static boolean changeShapeTool = true;
 	public static boolean purchaseErrorTool = true;
-	public static int eneMove = 0;
+	public static int whereEneMoveIfNotFol = 0;
 	public static int eneFollowOrNot;
 	public static String[] Shapes = { "Circle", "Square" };
 	public static int chosenShape;
@@ -106,11 +110,15 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public void pointsGenerator() {
 		point1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
 		point1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
+		specialPoint1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
+		specialPoint1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
 	}
 
 	public void enemysPosGenerate() {
 		enemy1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
 		enemy1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
+		enemy2Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
+		enemy2Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
 	}
 
 	@Override
@@ -157,9 +165,13 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 
 			g.setColor(new Color(255, 215, 0));
 			g.fillOval(point1Xpos + 1, point1Ypos + 2, coinsSize, coinsSize);
+			g.setColor(new Color(100,249,25));
+			g.fillOval(specialPoint1Xpos + 1, specialPoint1Ypos + 2, coinsSize, coinsSize);
 
 			g.setColor(Color.red);
 			g.fillOval(enemy1Xpos, enemy1Ypos, UnitSize, UnitSize);
+			g.setColor(Color.red);
+			g.fillOval(enemy2Xpos, enemy2Ypos, UnitSize, UnitSize);
 
 			g.setColor(Color.black);
 			g.setFont(new Font("Ink Free", Font.BOLD, 30));
@@ -583,6 +595,17 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 				Deaths++;
 				enemysPosGenerate();
 			}
+			else if(playerXpos == enemy2Xpos && playerYpos == enemy2Ypos) {
+				playerXpos = startPlayerXpos;
+				playerYpos = startPlayerYpos;
+				if (Score > HighScore) {
+					HighScore = Score;
+				}
+				totalScore += Score;
+				Score = 0;
+				Deaths++;
+				enemysPosGenerate();
+			}
 			// check collide with points
 			checkCollideWithCoins();
 		}
@@ -593,6 +616,10 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			Score += 1 * TimesPoints;
 			pointsGenerator();
 		}
+		else if (playerXpos == specialPoint1Xpos && playerYpos == specialPoint1Ypos) {
+			Score += 2 * TimesPoints;
+			pointsGenerator();
+		}
 	}
 
 	public void removeShopButon() {
@@ -600,6 +627,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	}
 
 	public void enemyMovments() {
+		//enemy 1 V
 		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
 		if (eneMoveOrNot == 0) {
 			if (isRunning && !isPauseing) {
@@ -624,8 +652,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 						}
 					}
 				} else {
-					eneMove = random.nextInt(4);
-					switch (eneMove) {
+					whereEneMoveIfNotFol = random.nextInt(4);
+					switch (whereEneMoveIfNotFol) {
 					case 0:
 						if (enemy1Xpos != 600) {
 							enemy1Xpos += 25;
@@ -647,6 +675,61 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 					case 3:
 						if (enemy1Ypos != 0) {
 							enemy1Ypos -= 25;
+							checkCollisions();
+						}
+						break;
+					}
+				}
+			}
+		}
+		//enemy 2 V
+		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
+		if (eneMoveOrNot == 0) {
+			if (isRunning && !isPauseing) {
+				eneFollowOrNot = random.nextInt(3);// follow or not
+				if (eneFollowOrNot == 0) {
+					eneFolRightAndLeftOrUpAndDown = random.nextInt(2);// 0 = Right And Left 1 = Up And Down
+					if (eneFolRightAndLeftOrUpAndDown == 0) {
+						if (enemy2Xpos > playerXpos) {
+							enemy2Xpos -= 25;
+							checkCollisions();
+						} else {
+							enemy2Xpos += 25;
+							checkCollisions();
+						}
+					} else {
+						if (enemy2Ypos > playerYpos) {
+							enemy2Ypos -= 25;
+							checkCollisions();
+						} else {
+							enemy2Ypos += 25;
+							checkCollisions();
+						}
+					}
+				} else {
+					whereEneMoveIfNotFol = random.nextInt(4);
+					switch (whereEneMoveIfNotFol) {
+					case 0:
+						if (enemy2Xpos != 600) {
+							enemy2Xpos += 25;
+							checkCollisions();
+						}
+						break;
+					case 1:
+						if (enemy2Ypos != 600) {
+							enemy2Ypos += 25;
+							checkCollisions();
+						}
+						break;
+					case 2:
+						if (enemy2Xpos != 0) {
+							enemy2Xpos -= 25;
+							checkCollisions();
+						}
+						break;
+					case 3:
+						if (enemy2Ypos != 0) {
+							enemy2Ypos -= 25;
 							checkCollisions();
 						}
 						break;
@@ -677,8 +760,10 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 				case KeyEvent.VK_C:
 					System.out.println("Player x = " + playerXpos);
 					System.out.println("Player y = " + playerYpos);
-					System.out.println("Enemy x = " + enemy1Xpos);
-					System.out.println("Enemy y = " + enemy1Ypos);
+					System.out.println("Enemy(1) x = " + enemy1Xpos);
+					System.out.println("Enemy(1) y = " + enemy1Ypos);
+					System.out.println("Enemy(2) x = " + enemy2Xpos);
+					System.out.println("Enemy(2) y = " + enemy2Ypos);
 					System.out.println("Coin x = " + point1Xpos);
 					System.out.println("Coin y = " + point1Ypos);
 					break;
