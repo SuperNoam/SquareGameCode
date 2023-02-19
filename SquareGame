@@ -638,7 +638,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
 		if (eneMoveOrNot == 0) {
 			if (isRunning && !isPauseing) {
-				eneFollowOrNot = random.nextInt(3);// follow or not
+				eneFollowOrNot = random.nextInt(3);// follow or not 1/3
 				if (eneFollowOrNot == 0) {
 					eneFolRightAndLeftOrUpAndDown = random.nextInt(2);// 0 = Right And Left 1 = Up And Down
 					if (eneFolRightAndLeftOrUpAndDown == 0) {
@@ -693,7 +693,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
 		if (eneMoveOrNot == 0) {
 			if (isRunning && !isPauseing) {
-				eneFollowOrNot = random.nextInt(3);// follow or not
+				eneFollowOrNot = random.nextInt(3);// follow or not 1/3
 				if (eneFollowOrNot == 0) {
 					eneFolRightAndLeftOrUpAndDown = random.nextInt(2);// 0 = Right And Left 1 = Up And Down
 					if (eneFolRightAndLeftOrUpAndDown == 0) {
