@@ -1,3 +1,42 @@
+Points.Java=======================================================================================================================
+public class Points {
+	private int xPos;
+	private int yPos;
+	private int worth;
+
+	public Points(int worth){
+		this.worth = worth;
+	}
+	public Points(int xPos, int yPos){
+		this.xPos = xPos;
+		this.yPos = yPos;
+	}
+
+	public int getxPos() {
+		return xPos;
+	}
+
+	public void setxPos(int xPos) {
+		this.xPos = xPos;
+	}
+
+	public int getyPos() {
+		return yPos;
+	}
+
+	public void setyPos(int yPos) {
+		this.yPos = yPos;
+	}
+
+	public int getWorth() {
+		return worth;
+	}
+
+	public void setWorth(int worth) {
+		this.worth = worth;
+	}
+}
+
 Square.java=======================================================================================================================
 public class Square {
 
@@ -26,7 +65,6 @@ public class SquareGameFrame extends JFrame {
 	}
 }
 SquareGamePannel====================================================================================================================
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -49,10 +87,10 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static int enemy2Ypos;
 	public static int eneFolRightAndLeftOrUpAndDown;
 	public static int eneMoveOrNot;
-	public static int point1Xpos;
-	public static int point1Ypos;
-	public static int specialPoint1Xpos;
-	public static int specialPoint1Ypos;
+	//public static int point1Xpos;
+	//public static int point1Ypos;
+	//public static int specialPoint1Xpos;
+	//public static int specialPoint1Ypos;
 	public static int TimesPoints = 1;
 	public static int TimesBoughts = 0;
 	public static int UnitSize = 25;
@@ -81,6 +119,9 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	public static int eneFollowOrNot;
 	public static String[] Shapes = { "Circle", "Square" };
 	public static int chosenShape;
+	public static Points[] PointsArr = new Points[2];
+	Points regPoint1 = new Points(1);
+	Points spePoint1 = new Points(2);
 	Timer timer;
 	Random random;
 	JButton changePlayerShapeButton = new JButton();
@@ -103,6 +144,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		random = new Random();
 		timer = new Timer(Delay, this);
 		timer.start();
+		PointsArr[0] = regPoint1;
+		PointsArr[1] = spePoint1;
 		startGame();
 	}
 
@@ -113,12 +156,12 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	}
 
 	public void regPointsGenerator() {
-		point1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
-		point1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
+		PointsArr[0].setxPos(random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize);
+		PointsArr[0].setyPos(random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize);
 	}
 	public void spePointsGenerator() {
-		specialPoint1Xpos = random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize;
-		specialPoint1Ypos = random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize;
+		PointsArr[1].setxPos(random.nextInt((int) (ScreenWidth / UnitSize)) * UnitSize);
+		PointsArr[1].setyPos(random.nextInt((int) (ScreenHeight / UnitSize)) * UnitSize);
 	}
 
 	public void enemysPosGenerate() {
@@ -171,9 +214,9 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 			}
 			
 			g.setColor(new Color(249, 227, 87));
-			g.fillOval(point1Xpos + 1, point1Ypos + 2, coinsSize, coinsSize);
+			g.fillOval(PointsArr[0].getxPos() + 1, PointsArr[0].getyPos() + 2, coinsSize, coinsSize);
 			g.setColor(new Color(255, 215, 0));
-			g.fillOval(specialPoint1Xpos + 1, specialPoint1Ypos + 2, coinsSize, coinsSize);
+			g.fillOval(PointsArr[1].getxPos() + 1, PointsArr[1].getyPos() + 2, coinsSize, coinsSize);
 
 			g.setColor(Color.red);
 			g.fillOval(enemy1Xpos, enemy1Ypos, UnitSize, UnitSize);
@@ -619,12 +662,12 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 	}
 
 	public void checkCollideWithCoins() {
-		if (playerXpos == point1Xpos && playerYpos == point1Ypos) {
-			Score += 1 * TimesPoints;
+		if (playerXpos == PointsArr[0].getxPos() && playerYpos == PointsArr[0].getyPos()) {
+			Score += PointsArr[0].getWorth() * TimesPoints;
 			regPointsGenerator();
 		}
-		else if (playerXpos == specialPoint1Xpos && playerYpos == specialPoint1Ypos) {
-			Score += 2 * TimesPoints;
+		else if (playerXpos == PointsArr[1].getxPos() && playerYpos == PointsArr[1].getyPos()) {
+			Score += PointsArr[1].getWorth() * TimesPoints;
 			spePointsGenerator();
 		}
 	}
@@ -633,7 +676,7 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 		this.remove(shopButton);
 	}
 
-	public void enemyMovments() {
+	public void enemyMovments() throws InterruptedException {
 		//enemy 1 V
 		eneMoveOrNot = random.nextInt(4);// if he will move else he wont |-75% of speed 1/4|
 		if (eneMoveOrNot == 0) {
@@ -771,8 +814,8 @@ public class SquareGamePannel extends JPanel implements ActionListener {
 					System.out.println("Enemy(1) y = " + enemy1Ypos);
 					System.out.println("Enemy(2) x = " + enemy2Xpos);
 					System.out.println("Enemy(2) y = " + enemy2Ypos);
-					System.out.println("Coin x = " + point1Xpos);
-					System.out.println("Coin y = " + point1Ypos);
+					System.out.println("Coin x = " + PointsArr[0].getxPos());
+					System.out.println("Coin y = " + PointsArr[1].getyPos());
 					break;
 				}
 			}
